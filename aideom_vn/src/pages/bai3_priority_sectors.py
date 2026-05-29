@@ -141,8 +141,8 @@ def render():
             scores = df_norm[cols_benefit + ["Risk"]].values @ w_temp
             rankings.append(scores)
             
-        rank_df = pd.DataFrame(np.array(rankings).T, columns=[f"{aw:.1f}" for aw in ai_weights])
-        rank_df.index = df_sec['Ngành']
+        rank_df = pd.DataFrame(np.array(rankings).T, columns=[f"{aw:.2f}" for aw in ai_weights])
+        rank_df.index = df_sec.sort_index()['Ngành'] # Use original index for matching order
         
         fig_heat = px.imshow(rank_df, labels=dict(x="Trọng số AI", y="Ngành", color="Điểm"),
                              title="Sự thay đổi điểm số khi thay đổi ưu tiên AI")
