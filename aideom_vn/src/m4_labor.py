@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import pulp
 from typing import Tuple, Dict, Any, List
 
 class LaborMarketModel:
@@ -49,6 +48,7 @@ def solve_labor_optimization(budget: float = 30000.0) -> Tuple[np.ndarray, np.nd
     model = LaborMarketModel()
     N = len(model.sectors)
     
+    import pulp
     prob = pulp.LpProblem("VN_Labor_Optimization", pulp.LpMaximize)
     
     # Biến quyết định
@@ -136,6 +136,7 @@ def scenario_displacement_cap(
     model = LaborMarketModel()
     N = len(model.sectors)
     
+    import pulp
     prob = pulp.LpProblem("VN_Labor_Displacement_Cap", pulp.LpMaximize)
     
     x_AI = pulp.LpVariable.dicts("x_AI", range(N), lowBound=0)
@@ -315,6 +316,7 @@ def solve_netjob_maximization(budget_total: float = 60000.0) -> Tuple[np.ndarray
     df_sectors = load_sectors()
     n_sectors = len(df_sectors)
     
+    import pulp
     prob = pulp.LpProblem("NetJob_Maximization", pulp.LpMaximize)
     
     # Biến quyết định: Phân bổ ngân sách cho từng ngành

@@ -1,9 +1,14 @@
 import numpy as np
-import gymnasium as gym
-from gymnasium import spaces
 from typing import Tuple, Dict, Any, Optional
 
-class VietnamEconomyEnv(gym.Env):
+try:
+    import gymnasium as gym
+    from gymnasium import spaces
+    PARENT_CLASS = gym.Env
+except ImportError:
+    PARENT_CLASS = object
+
+class VietnamEconomyEnv(PARENT_CLASS):
     """
     Môi trường Gymnasium mô phỏng kinh tế Việt Nam trong kỷ nguyên AI (Bài 11).
     Không gian trạng thái gồm 81 trạng thái rời rạc đại diện cho sự kết hợp của:
@@ -23,7 +28,14 @@ class VietnamEconomyEnv(gym.Env):
     metadata = {"render_modes": ["human"]}
     
     def __init__(self):
-        super(VietnamEconomyEnv, self).__init__()
+        try:
+            import gymnasium as gym
+            from gymnasium import spaces
+        except ImportError:
+            pass
+
+        if PARENT_CLASS != object:
+            super(VietnamEconomyEnv, self).__init__()
         
         # 5 hành động rời rạc
         self.action_space = spaces.Discrete(5)

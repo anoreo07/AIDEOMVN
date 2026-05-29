@@ -1,7 +1,5 @@
 import numpy as np
 import scipy.optimize as opt
-import pulp
-import cvxpy as cp
 from typing import Tuple, Dict, Any, List, Optional
 
 def solve_lp_scipy(budget_total: float = 100.0) -> Tuple[np.ndarray, float]:
@@ -60,6 +58,7 @@ def solve_lp_pulp(budget_total: float = 100.0) -> Tuple[np.ndarray, float, Dict[
             - Z_opt: GDP tăng cực đại.
             - shadow_prices: Từ điển chứa giá đối ngẫu (shadow prices) của từng ràng buộc.
     """
+    import pulp
     # Khởi tạo bài toán tối đa hóa
     prob = pulp.LpProblem("Simple_Budget_Allocation", pulp.LpMaximize)
     
@@ -148,6 +147,7 @@ def solve_allocation_pulp(
     # Chỉ số số hóa ban đầu D_0
     D0 = {'NMM':38.0, 'RRD':78.0, 'NCC':55.0, 'CH':32.0, 'SE':82.0, 'MD':48.0}
     
+    import pulp
     prob = pulp.LpProblem("VN_Region_Budget", pulp.LpMaximize)
     
     # Biến quyết định
@@ -216,6 +216,7 @@ def solve_allocation_cvxpy(
     
     D0_vec = np.array([38.0, 78.0, 55.0, 32.0, 82.0, 48.0])
     
+    import cvxpy as cp
     # Biến quyết định trong CVXPY
     X = cp.Variable((6, 4), nonneg=True)
     
@@ -289,6 +290,7 @@ def solve_project_selection(
     B = {1:21500, 2:20800, 3:32500, 4:9200, 5:6800, 6:11400, 7:12200, 8:28500,
          9:5800, 10:13800, 11:8500, 12:16200, 13:35000, 14:7500, 15:3800}
          
+    import pulp
     # Khởi tạo bài toán MIP
     prob = pulp.LpProblem("VN_Project_Selection", pulp.LpMaximize)
     

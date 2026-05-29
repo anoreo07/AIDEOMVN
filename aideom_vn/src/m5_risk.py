@@ -1,5 +1,4 @@
 import numpy as np
-import pulp
 from typing import Dict, Any, Tuple, List, Optional
 
 # Thiết lập các tham số mặc định của bài toán Tối ưu hóa ngẫu nhiên 2 giai đoạn (Bài 10)
@@ -47,6 +46,7 @@ def solve_stochastic_rp_pulp(config: Dict[str, Any] = DEFAULT_CONFIG) -> Tuple[n
     
     n_cats = len(categories)
     
+    import pulp
     # Khởi tạo bài toán
     prob = pulp.LpProblem("Stochastic_Recourse_Problem", pulp.LpMaximize)
     
@@ -128,6 +128,7 @@ def solve_expected_value_problem_pulp(config: Dict[str, Any] = DEFAULT_CONFIG) -
         mean_demand += probs[s_idx] * np.array(demands[s])
         mean_revenue += probs[s_idx] * np.array(revenues[s])
         
+    import pulp
     prob_ev = pulp.LpProblem("Expected_Value_Problem", pulp.LpMaximize)
     
     x_ev_vars = [pulp.LpVariable(f'x_ev_{cat}', lowBound=min_x[i]) for i, cat in enumerate(categories)]
@@ -154,6 +155,7 @@ def solve_expected_value_problem_pulp(config: Dict[str, Any] = DEFAULT_CONFIG) -
     eev_revenues = []
     
     for s in scenarios:
+        import pulp
         prob_s = pulp.LpProblem(f"EEV_Scenario_{s}", pulp.LpMaximize)
         y_s_vars = [pulp.LpVariable(f'y_eev_{s}_{cat}', lowBound=0) for cat in categories]
         
@@ -199,6 +201,7 @@ def solve_wait_and_see_pulp(config: Dict[str, Any] = DEFAULT_CONFIG) -> Tuple[Di
     x_opt_s = {}
     
     for s_idx, s in enumerate(scenarios):
+        import pulp
         prob_s = pulp.LpProblem(f"WS_Scenario_{s}", pulp.LpMaximize)
         
         x_vars = [pulp.LpVariable(f'x_ws_{s}_{cat}', lowBound=min_x[i]) for i, cat in enumerate(categories)]
@@ -251,6 +254,7 @@ def solve_minimax_regret_pulp(config: Dict[str, Any] = DEFAULT_CONFIG) -> Tuple[
     Z_star_s = {}
     
     for s in scenarios:
+        import pulp
         # Giải lại nhanh để lấy trị số mục tiêu chính xác của kịch bản s
         prob_s = pulp.LpProblem(f"Z_star_{s}", pulp.LpMaximize)
         x_vars = [pulp.LpVariable(f'x_star_{s}_{cat}', lowBound=min_x[i]) for i, cat in enumerate(categories)]
@@ -265,6 +269,7 @@ def solve_minimax_regret_pulp(config: Dict[str, Any] = DEFAULT_CONFIG) -> Tuple[
         prob_s.solve(pulp.PULP_CBC_CMD(msg=False))
         Z_star_s[s] = pulp.value(prob_s.objective)
         
+    import pulp
     # Bước 2: Thiết lập bài toán tối thiểu hóa hối tiếc cực đại
     prob_regret = pulp.LpProblem("Minimax_Regret_Problem", pulp.LpMinimize)
     
